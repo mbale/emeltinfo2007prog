@@ -68,7 +68,7 @@ namespace emeltinfo2007
 
             #region "7. Feladat"
             Console.WriteLine("Kérnék egy számsort:");
-            string chosennumbers = Console.ReadLine();
+            string chosennumber = Console.ReadLine();
 
             List<WordsWithNumbers> grouped = new List<WordsWithNumbers>();
 
@@ -77,9 +77,21 @@ namespace emeltinfo2007
                 grouped.Add(new WordsWithNumbers() { Word = words[i], Number = keypadnumbersforwords[i] });
             }
 
-            List<string> wordbynumber = new List<string>(
-                    grouped.SelectMany<WordsWithNumbers, string>(wordswithnumbers => wordswithnumbers.Number == chosennumbers));
-            //grouped.FindAll(wordswithnumbers => wordswithnumbers.Number == chosennumbers).Select<WordsWithNumbers, List<string>>(wordswithnumbers => new List<string>().Add(wordswithnumbers.Word)));
+            List<WordsWithNumbers> wordbynumber = new List<WordsWithNumbers>(grouped.Where(element => element.Number == chosennumber));
+
+            Console.WriteLine("Ehhez a számsorhoz, ha van több, ez(ek) a szavak tartoznak:");
+            foreach (WordsWithNumbers item in wordbynumber)
+            {
+                Console.WriteLine(item.Word);
+            }
+            #endregion
+            
+            #region "8. Feladat"
+            var group = grouped.GroupBy(element => element.Number);
+            foreach (var item in group)
+            {
+                Console.WriteLine(item);
+            }
 
             #endregion
 
