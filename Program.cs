@@ -74,7 +74,7 @@ namespace emeltinfo2007
 
             for (int i = 0; i < 524; i++)
             {
-                grouped.Add(new WordsWithNumbers() { Word = words[i], Number = keypadnumbersforwords[i] });
+                grouped.Add(new WordsWithNumbers() { Word = words[i], Number =  keypadnumbersforwords[i] });
             }
 
             List<WordsWithNumbers> wordbynumber = new List<WordsWithNumbers>(grouped.Where(element => element.Number == chosennumber));
@@ -86,11 +86,36 @@ namespace emeltinfo2007
             }
             #endregion
             
-            #region "8. Feladat"
-            var group = grouped.GroupBy(element => element.Number);
-            foreach (var item in group)
+            #region "8. Feladat / 9. Feladat"
+
+            var query = grouped.GroupBy(wordswithnumbers => wordswithnumbers.Number);
+
+            List<WordsWithNumbers> duplicate = new List<WordsWithNumbers>();
+
+            Console.WriteLine("Ezekhez a kódokhoz tartozik több szó:");
+            foreach (var item in query)
             {
-                Console.WriteLine(item);
+                if (item.Count() >= 2)
+                {
+                    foreach (var y in item)
+                    {
+                        duplicate.Add(new WordsWithNumbers() { Word = y.Word, Number = y.Number });
+                        Console.Write(y.Word + " : " + y.Number + "; ");
+                    }
+                }
+            }
+
+            Console.WriteLine(Environment.NewLine + "Ehhez a kódhoz tartozik a legtöbb szó:");
+
+            var dd = duplicate.GroupBy(xd => xd.Number).OrderByDescending(igro => igro.Key.Count());
+
+            foreach (var item in dd)
+            {
+                Console.WriteLine(item.Key);
+                foreach (var y in item)
+                {
+                    Console.WriteLine(y.Word);
+                }
             }
 
             #endregion
